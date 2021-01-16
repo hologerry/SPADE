@@ -30,7 +30,7 @@ class ReferenceHDDataset(BaseDataset):
         self.dataset_name = dataset_name
         self.case_name = case_name
         self.trans = get_image_transform()
-        self.one_image_times = 10
+        self.one_image_times = 80
         self.images_dir = ospj(opt.dataroot, dataset_name, opt.case_name, 'art_hd')
         sketch_mode = opt.sketch_mode
         if sketch_mode == 'c':
