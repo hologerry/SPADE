@@ -30,7 +30,7 @@ class ReferenceHDDataset(BaseDataset):
         self.dataset_name = dataset_name
         self.case_name = case_name
         self.trans = get_image_transform()
-        self.one_image_times = 80
+        self.one_image_times = 400
         self.images_dir = ospj(opt.dataroot, dataset_name, opt.case_name, 'art_hd')
         sketch_mode = opt.sketch_mode
         if sketch_mode == 'c':
@@ -64,7 +64,8 @@ class ReferenceHDDataset(BaseDataset):
         cropped_img_hd, cropped_img, cropped_skt = random_flip_hd(cropped_img_hd, cropped_img, cropped_skt)
         # cropped_img_hd, cropped_img, cropped_skt = random_scale_stretch_hd(cropped_img_hd, cropped_img, cropped_skt, self.size_bound)
         # reference_bank = arbitrary_reference_fetch(self.dataroot, self.dataset_name, self.case_name, self.reference_num, self.sample_per_ref)
-        cropped_skt = skt.resize((2*skt_w, 2*skt_h), Image.ANTIALIAS)
+        c_skt_w, c_skt_h = cropped_skt.size
+        cropped_skt = skt.resize((2*c_skt_w, 2*c_skt_h), Image.ANTIALIAS)
         # ref_bank = transform_references(reference_bank, skt_size, self.trans)
         return {
             "label": self.trans(cropped_skt), "image": self.trans(cropped_img_hd), 'instance': 0,
