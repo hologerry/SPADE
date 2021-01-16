@@ -47,7 +47,7 @@ class ReferenceHDDataset(BaseDataset):
         self.sketches_files = sorted(os.listdir(self.sketches_dir))
         assert len(self.images_files) == len(self.sketches_files)
         self.num_images = len(self.images_files)
-        self.size_bound = (128, 128)
+        self.size_bound = (256, 256)
         self.length = int(self.num_images * self.one_image_times)
 
     def __getitem__(self, index):
