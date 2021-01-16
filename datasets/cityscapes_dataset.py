@@ -4,8 +4,8 @@ Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses
 """
 
 import os.path
-from data.pix2pix_dataset import Pix2pixDataset
-from data.image_folder import make_dataset
+from datasets.pix2pix_dataset import Pix2pixDataset
+from datasets.image_folder import make_dataset
 
 
 class CityscapesDataset(Pix2pixDataset):

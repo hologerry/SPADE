@@ -9,7 +9,7 @@ import os
 from util import util
 import torch
 import models
-import data
+import datasets
 import pickle
 
 
@@ -40,8 +40,8 @@ class BaseOptions():
         parser.add_argument('--output_nc', type=int, default=3, help='# of output image channels')
 
         # for setting inputs
-        parser.add_argument('--dataroot', type=str, default='./datasets/cityscapes/')
-        parser.add_argument('--dataset_mode', type=str, default='coco')
+        parser.add_argument('--dataroot', type=str, default='./data')
+        parser.add_argument('--dataset_mode', type=str, default='reference_hd')
         parser.add_argument('--serial_batches', action='store_true', help='if true, takes images in order to make batches, otherwise takes them randomly')
         parser.add_argument('--no_flip', action='store_true', help='if specified, do not flip the images for data argumentation')
         parser.add_argument('--nThreads', default=0, type=int, help='# threads for loading data')
@@ -62,15 +62,23 @@ class BaseOptions():
                             help="dimension of the latent z vector")
 
         # for instance-wise features
-        parser.add_argument('--no_instance', action='store_true', help='if specified, do *not* add instance map as input')
+        parser.add_argument('--no_instance', default=True, help='if specified, do *not* add instance map as input')
         parser.add_argument('--nef', type=int, default=16, help='# of encoder filters in the first conv layer')
         parser.add_argument('--use_vae', action='store_true', help='enable training with an image encoder.')
+
+        # for reference ss hd
+        parser.add_argument('--dataset_name', type=str, default='reference_hd',
+                            choices=['masterpiece_hd', 'masterpiece','reference_hd', 'reference_ss_hd', 'reference_test_hd', 'multipiece'])
+        parser.add_argument('--case_name', type=str, default='qm0')
+        parser.add_argument('--sketch_mode', type=str, default='c', choices=['c', 's', 'l'], help='Sketch type')
+
 
         self.initialized = True
         return parser
 
     def gather_options(self):
         # initialize parser with basic options
+        parser = None
         if not self.initialized:
             parser = argparse.ArgumentParser(
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -86,7 +94,7 @@ class BaseOptions():
 
         # modify dataset-related parser options
         dataset_mode = opt.dataset_mode
-        dataset_option_setter = data.get_option_setter(dataset_mode)
+        dataset_option_setter = datasets.get_option_setter(dataset_mode)
         parser = dataset_option_setter(parser, self.isTrain)
 
         opt, unknown = parser.parse_known_args()
