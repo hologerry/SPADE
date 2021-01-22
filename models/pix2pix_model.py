@@ -2,7 +2,7 @@
 Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
 Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 """
-
+import os
 import torch
 import models.networks as networks
 import util.util as util
@@ -135,7 +135,6 @@ class Pix2PixModel(torch.nn.Module):
             data['label'] = data['label'].cuda()
             # data['instance'] = data['instance'].cuda()
             data['image'] = data['image'].cuda()
-
         # # create one-hot label map
         # label_map = data['label']
         # bs, _, h, w = label_map.size()
